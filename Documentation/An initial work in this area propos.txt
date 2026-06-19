@@ -1,0 +1,280 @@
+An initial work in this area proposed by Kiros et al. [69]. The method applies a CNN for extracting
+image features in generating image captions. It uses a multimodal space that represents both image
+and text jointly for multimodal representation learning and image caption generation. It also
+introduces the multimodal neural language models such as Modality-Biased Log-Bilinear Model
+(MLBL-B) and the Factored 3-way Log-Bilinear Model (MLBL-F) of [104] followed by AlexNet [73].
+Unlike most previous approaches, this method does not rely on any additional templates, structures,
+or constraints. Instead it depends on the high level image features and word representations learned
+from deep neural networks and multimodal neural language models respectively. The neural
+language models have limitations to handle a large amount of data and are inefficient to work with
+long term memory [64].
+Kiros et al. [69] extended their work in [70] to learn a joint image sentence embedding where
+LSTM is used for sentence encoding and a new neural language model called the structure-content
+neural language model (SC-NLM) is used for image captions generations. The SC-NLM has an
+advantage over existing methods in that it can extricate the structure of the sentence to its content
+produced by the encoder. It also helps them to achieve significant improvements in generating
+realistic image captions over the approach proposed by [69]
+Karpathy et al. [66] proposed a deep, multimodal model, embedding of image and natural language
+data for the task of bidirectional images and sentences retrieval. The previous multimodal-based
+methods use a common, embedding space that directly maps images and sentences. However,
+this method works at a finer level and embeds fragments of images and fragments of sentences.
+This method breaks down the images into a number of objects and sentences into a dependency
+tree relations (DTR) [28] and reasons about their latent, inter-modal alignment. It shows that
+the method achieves significant improvements in the retrieval task compared to other previous
+methods. This method has a few limitations as well. In terms of modelling, the dependency tree can model relations easily but they are not always appropriate. For example, a single visual entity might
+be described by a single complex phrase that can be split into multiple sentence fragments. The
+phrase “black and white dog” can be formed into two relations (CONJ, black, white) and (AMOD,
+white, dog). Again, for many dependency relations we do not find any clear mapping in the image
+(For example: “each other” cannot be mapped to any object).
+Mao et al. [94] proposed a multimodal Recurrent Neural Network (m-RNN) method for generating
+novel image captions. This method has two sub-networks: a deep recurrent neural network for
+sentences and a deep convolutional network for images. These two sub-networks interact with
+each other in a multimodal layer to form the whole m-RNN model. Both image and fragments of
+sentences are given as input in this method. It calculates the probabilty distribution to generate the
+next word of captions. There are five more layers in this model: Two-word embedding layers, a
+recurrent layer, a multimodal layer and a SoftMax layer. Kiros et al. [69] proposed a method that is
+built on a Log-Bilinear model and used AlexNet to extract visual features.
+Chen et al. [23] proposed another multimodal space-based image captioning method. The method
+can generate novel captions from image and restore visual features from the given description. It
+also can describe a bidirectional mapping between images and their captions.
+Ren et al. 2017 [119] introduced a novel reinforcement learning based image captioning method.
+The architecture of this method has two networks that jointly compute the next best word at each
+time step. The “policy network” works as local guidance and helps to predict next word based
+on the current state. The “value network”’ works as global guidance and evaluates the reward
+value considering all the possible extensions of the current state. This mechanism is able to adjust
+the networks in predicting the correct words. Therefore, it can generate good captions similar to
+ground truth captions at the end.
+Rennie et al. [120] proposed another reinforcement learning based image captioning method. The
+method utilizes the test-time inference algorithm to normalize the reward rather than estimating
+the reward signal and normalization in training time. It shows that this test-time decoding is highly
+effective for generating quality image captions.
+Zhang et al. [161] proposed an actor-critic reinforcement learning-based image captioning
+method. The method can directly optimize non-differentiable problems of the existing evaluation
+metrics. The architecture of the actor-critic method consists of a policy network (actor) and a value
+network (critic). The actor treats the job as sequential decision problem and can predict the next
+token of the sequence. In each state of the sequence, the network will receive a task-specific reward
+(in this case, it is evaluation metrics score). The job of the critic is to predict the reward. If it can
+predict the expected reward, the actor will continue to sample outputs according to its probability
+distribution.
+Johnson et al. [62] proposed an image captioning method called DenseCap. This method localizes
+all the salient regions of an image and then it generates descriptions for those regions.
+A typical method of this category has the following steps:
+(1) Region proposals are generated for the different regions of the given image.
+(2) CNN is used to obtain the region-based image features.
+(3) The outputs of Step 2 are used by a language model to generate captions for every region.
+Vinyals et al. [142] proposed a method called Neural Image Caption Generator (NIC). The method
+uses a CNN for image representations and an LSTM for generating image captions. This special
+CNN uses a novel method for batch normalization and the output of the last hidden layer of CNN
+is used as an input to the LSTM decoder. This LSTM is capable of keeping track of the objects that
+already have been described using text. NIC is trained based on maximum likelihood estimation.
+In generating image captions, image information is included to the initial state of an LSTM. The
+next words are generated based on the current time step and the previous hidden state. This process
+continues until it gets the end token of the sentence. Since image information is fed only at the
+beginning of the process, it may face vanishing gradient problems. The role of the words generated
+at the beginning is also becoming weaker and weaker. Therefore, LSTM is still facing challenges in
+generating long length sentences [7, 24]. Therefore, Jia et al. [59] proposed an extension of LSTM
+called guided LSTM (gLSTM). This gLSTM can generate long sentences. In this architecture, it adds global semantic information to each gate and cell state of LSTM. It also considers different length
+normalization strategies to control the length of captions. Semantic information is extracted in
+different ways. First, it uses a cross-modal retrieval task for retrieving image captions and then
+semantic information is extracted from these captions. The semantic based information can also be
+extracted using a multimodal embedding space.
+Mao et al. [92] proposed a special type of text generation method for images. This method
+can generate a description for an specific object or region that is called referring expression
+[37, 46, 68, 102, 103, 136, 141]. Using this expression it can then infer the object or region which is
+being described. Therefore, generated description or expression is quite unambiguous. In order to
+address the referring expression, this method uses a new dataset called ReferIt dataset [68] based
+on popular MS COCO dataset.
+Wang et al. [144] proposed a deep bidirectional LSTM-based method for image captioning. This
+method is capable of generating contextually and semantically rich image captions. The proposed
+architecture consists of a CNN and two separate LSTM networks. It can utilize both past and future
+context information to learn long term visual language interactions.
+Fang et al.[33] introduced generation-based image captioning. It uses visual detectors, a language
+model, and a multimodal similarity model to train the model on an image captioning dataset. Image words from the training captions. The system works with the image sub-regions rather that the full
+image. Convolutional neural networks (both AlexNet [73] and VGG16Net) are used for extracting
+features for the sub-regions of an image. The features of sub-regions are mapped with the words
+of the vocabulary that likely to be contained in the image captions. Multiple instance learning
+(MIL) [96] is used to train the model for learning discriminative visual signatures of each word.
+A maximum entropy (ME) [12] language model is used for generating image captions from these
+words. Generated captions are ranked by a linear weighting of sentence features. Minimum Error
+rate training (MERT) [106] is used to learn these weights. Similarity between image and sentence
+can be easily measured using a common vector representation. Image and sentence fragments are
+mapped with the common vector representation by a deep multimodal similarity model (DMSM).
+It achieves a significant improvement in choosing high quality image captions.
+Tran et
+al. [135] introduced a different image captioning method. This method is capable of generating
+image captions even for open domain images. It can detect a diverse set of visual concepts and
+generate captions for celebrities and landmarks. It uses an external knowledge base Freebase [16] in
+recognizing a broad range of entities such as celebrities and landmarks. A series of human judgments
+are applied for evaluating the performances of generated captions. In experiments, it uses three
+datasets: MS COCO, Adobe-MIT FiveK [19], and images from Instagram. The images of MS COCO
+dataset were collected from the same domain but the images of other datasets were chosen from an
+open domain. The method achieves notable performances especially on the challenging Instagram
+dataset.
+Ma et al. [90] proposed another compositional network-based image captioning method. This
+method uses structural words <object, attribute, activity, scene> to generate semantically meaningful
+descriptions. It also uses a multi-task method similar to multiple instance learning method
+[33], and multi-layer optimization method [52] to generate structural words. An LSTM encoderdecoder-
+based machine translation method [131] is then used to translate the structural words into
+image captions.
+Wang et al. [146] proposed a parallel-fusion RNN-LSTM architecture for image caption generation.
+The architecture of the method divides the hidden units of RNN and LSTM into a number of samesize
+parts. The parts work in parallel with corresponding ratios to generate image captions.
+Xu et al. [152] were the first to introduce an attention-based image captioning method. The
+method describes the salient contents of an image automatically. The main difference between the
+attention-based methods with other methods is that they can concentrate on the salient parts of the
+image and generate the corresponding words at the same time. This method applies two different
+techniques: stochastic hard attention and deterministic soft attention to generate attentions. Most
+CNN-based approaches use the top layer of ConvNet for extracting information of the salient
+objects from the image. A drawback of these techniques is that they may lose certain information
+which is useful to generate detailed captions. In order to preserve the information, the attention
+method uses features from the lower convolutional layer instead of fully connected layer.
+Jin et al. [61] proposed another attention-based image captioning method. This method is
+capable to extract the flow of abstract meaning based on the semantic relationship between visual
+information and textual information. It can also obtain higher level semantic information by proposing a scene specific context. The main difference between this method with other attentionbased
+methods is that it introduces multiple visual regions of an image at multiple scales. This
+technique can extract proper visual information of a particular object. For extracting scene specific
+context, it first uses the Latent Dirichlet Allocation (LDA) [14] for generating a dictionary from all
+the captions of the dataset. Then a multilayer perceptron is used to predict a topic vector for every
+image. A scene factored LSTM that has two stacked layers are used to generate a description for
+the overall context of the image.
+Wu et al. [151] proposed a review-based attention method for image captioning. It introduces a
+review model that can perform multiple review steps with attention on CNN hidden states. The
+output of the CNN is a number of fact vectors that can obtain the global facts of the image. The
+vectors are given as input to the attention mechanism of the LSTM. For example, a reviewer module
+can first review: What are the objects in the image? Then it can review the relative positions of the
+objects and another review can extract the information of the overall context of the image. These
+information is passed to the decoder to generate image captions.
+Pedersoli et al. [112] proposed an area based attention mechanism for image captioning. Previous
+attention based methods map image regions only to the state of RNN language model. However, this
+approach associates image regions with caption words given the RNN state. It can predict the next
+caption word and corresponding image region in each time-step of RNN. It is capable of predicting
+the next word as well as corresponding image regions in each time-step of RNN for generating
+image captions. In order to find the areas of attention, previous attention-based image caption
+methods use either the position of CNN activation grid or object proposals. In contrast, this method
+uses an end to end trainable convolutional spatial transformer along with CNN activation gird and
+object proposal methods. A combination of these techniques help this method to compute image
+adaptive areas of attention. In experiments, the method shows that this new attention mechanism
+together with the spatial transformer network can produce high quality image captions.
+Lu et al. [88] proposed another attention-based image captioning method. The method is based
+on adaptive attention model with a visual sentinel. Current attention-based image captioning
+methods focus on the image in every time step of RNN. However, there are some words or phrase
+(for example: a, of) that do not need to attend visual signals. Moreover, these unnecessary visual
+signals could affect the caption generation process and degrade the overall performance. Therefore,
+their proposed method can determine when it will focus on image region and when it will just
+focus on language generation model. Once it determines to look on the image then it must have
+to choose the spatial location of the image. The first contribution of this method is to introduce
+a novel spatial attention method that can compute spatial features from the image. Then in their
+adaptive attention method, they introduced a new LSTM extension. Generally, an LSTM works as a
+decoder that can produce a hidden state at every time step. However, this extension is capable of
+producing an additional visual sentinel that provides a fallback option to the decoder. It also has a
+sentinel gate that can control how much information the decoder will get from the image.
+Liu et al. [84] proposed a method for neural image captioning. This method can
+evaluate and correct the attention map at time step. Correctness means to make consistent map
+between image regions and generated words. In order to achieve these goals, this method introduced
+a quantitative evaluation metric to compute the attention maps. It uses Flickr30k entity dataset
+[113] and MS COCO [83] dataset for measuring both ground truth attention map and semantic
+labelings of image regions. In order to learn a better attention function, it proposed supervised
+attention model. Two types of supervised attention models are used here: strong supervision with alignment annotation and weak supervision with semantic labelling. In strong supervision
+with alignment annotation model, it can directly map ground truth word to a region. However,
+ground truth alignment is not always possible because collecting and annotating data is often very
+expensive. Weak supervision is performed to use bounding box or segmentation masks on MS
+COCO dataset. In experiments, the method shows that supervised attention model performs better
+in mapping attention as well as image captioning.
+Chen et al. [21] proposed another attention-based image captioning method. This method
+considers both spatial and channel wise attentions to compute an attention map. The existing
+attention-based image captioning methods only consider spatial information for generating an
+attention map. A common drawback of these spatial attention methods are that they compute
+weighted pooling only on attentive feature map. As a result, these methods lose the spatial information
+gradually. Moreover, they use the spatial information only from the last conv-layer of the
+CNN. The receptive field regions of this layer are quite large that make the limited gap between
+the regions. Therefore, they do not get significant spatial attentions for an image. However, in
+this method, CNN features are extracted not only from spatial locations but also from different
+channels and multiple layers. Therefore, it gets significant spatial attention. In addition to this,
+in this method, each filter of a convolutional layer acts as semantic detectors [159] while other
+methods use external sources for obtaining semantic information.
+In order to reduce the gap between human generated description and machine generated description
+Tavakoli et al. [134] introduced an attention-based image captioning method. This is a
+bottom up saliency based attention model that can take advantages for comparisons with other
+attention-based image captioning methods. It found that humans first describe the more important
+objects than less important ones. It also shows that the method performs better on unseen data
+Park et al. [111] introduced a different type of attention-based image captioning method. This
+method can generate image captions addressing personal issues of an image. It mainly considers
+two tasks : hashtag prediction and post generation. This method uses a Context Sequence Memory
+Network (CSMN) to obtain the context information from the image. Description of an image
+from personalized view has a lot of applications in social media networks. For example, everyday
+people share a lot of images as posts in Facebook, Instagram or other social media. Photo-taking
+or uploading is a very easy task. However, describing them is not easy because it requires theme,
+sentiment, and context of the image. Therefore, the method considers the past knowledge about the
+user's vocabularies or writing styles from the prior documents for generating image descriptions. In
+order to work with this new type of image captioning, the CSMN method has three contributions:
+first, the memory of this network can work as a repository and retain multiple types of context
+information. Second, the memory is designed in such a way that it can store all the previously
+generated words sequentially. As a result, it does not suffer from vanishing gradient problem. Third,
+the proposed CNN can correlate with multiple memory slots that is helpful for understanding
+contextual concepts.
+The method of Yao et al. [155] has
+different architectures to incorporate attributes with image representations. Mainly, two types of
+architectural representations are introduced here. In the first group, it inserts only attributes to the
+LSTM or image representations to the LSTM first and then attributes and vice versa. In the second
+group, it can control the time step of LSTM. It decides whether image representation and attributes
+will be inputted once or every time step. These variants of architectures are tested on MS COCO
+dataset and common evaluation metrics.
+Gan et al. [41] introduced a Semantic Compositional Network (SCN) for image captioning.
+In this method, a semantic concept vector is constructed from all the probable concepts (called tags
+here) found in the image. This semantic vector has more potential than visual feature vector and
+scene vector and can generate captions covering the overall meaning of the image. This is called
+compositional network because it can compose most semantic concepts.
+Wang et al. [148] proposed a method
+that locates the objects and their interactions first and then identifies and extracts the relevant
+attributes to generate image captions. The main aim of this method is to decompose the ground
+truth image captions into two parts: Skeleton sentence and attribute phrases. The method is also
+called Skeleton Key. The architecture of this method has ResNet [53] and two LSTMs called Skel-
+LSTM and Attr-LSTM. During training, skeleton sentences are trained by Skel-LSTM network and
+attribute phrases are trained by the Attr-LSTM network. In the testing phase, skeleton sentences are
+generated first that contain the words for main objects of the image and their relationships. Then
+these objects look back through the image again to obtain the relevant attributes. It is tested on MS
+COCO dataset and a new Stock3M dataset and can generate more accurate and novel captions
+Anne et al. [6] proposed a Deep Compositional Captioner (DCC) that can represent the unseen
+objects in generated captions.
+Yao et al. [154] proposed a copying mechanism to generate description for novel objects. This
+method uses a separate object recognition dataset to develop classifiers for novel objects. It integrates
+the appropriate words in the output captions by a decoder RNN with copying mechanism. The
+architecture of the method adds a new network to recognize the unseen objects from unpaired
+images and incorporate them with LSTM to generate captions.
+Generating captions for the unseen images is a challenging research problem. Venugopalan et
+al. [140] introduced a Novel Object Captioner (NOC) for generating captions for unseen objects
+in the image. They used external sources for recognizing unseen objects and learning semantic
+knowledge.
+Gan et al. [39] proposed a novel image
+captioning system called StyleNet. This method can generate attractive captions adding various
+styles. The architecture of this method consists of a CNN and a factored LSTM that can separate
+factual and style factors from the captions. It uses multitask sequence to sequence training [89] for
+identifying the style factors and then add these factors at run time for generating attractive captions.
+More interestingly, it uses an external monolingual stylized language corpus for training instead of
+paired images. However, it uses a new stylized image caption dataset called FlickrStyle10k and can
+generate captions with different styles.
+Mathews et al. [97] claimed
+that automatic image descriptions are missing this non-factual aspects. Therefore, they proposed a
+method called SentiCap. This method can generate image descriptions with positive or negative
+sentiments. It introduces a novel switching RNN model that combines two CNN+RNNs running in
+parallel. In each time step, this switching model generates the probability of switching between two
+RNNs. One generates captions considering the factual words and other considers the words with
+sentiments. It then takes inputs from the hidden states of both two RNNs for generating captions.
+This method can generate captions successfully given the appropriate sentiments.
+Gu et al. [51] proposed a CNN
+language model-based image captioning method. This method uses a language-CNN for statistical
+language modelling. However, the method cannot model the dynamic temporal behaviour of the
+language model only using a language-CNN. It combines a recurrent network with the language-
+CNN to model the temporal dependencies properly. Aneja et al. [5] proposed a convolutional
+architecture for the task of image captioning. They use a feed-forward network without any
+recurrent function. The architecture of the method has four components: (i) input embedding layer
+(ii) image embedding layer (iii) convolutional module, and (iv) output embedding layer. It also uses
+an attention mechanism to leverage spatial image features. They evaluate their architecture on the
+challenging MSCOCO dataset and shows comparable performance to an LSTM based method on
+standard metrics.
+Wang et al. [147] proposed another CNN+CNN based image captioning method. It is similar
+to the method of Aneja et al. except that it uses a hierarchical attention module to connect the
+vision-CNN with the language-CNN. The authors of this method also investigate the use of various
+hyperparameters, including the number of layers and the kernel width of the language-CNN. They
+show that the influence of the hyperparameters can improve the performance of the method in
+image captioning.
